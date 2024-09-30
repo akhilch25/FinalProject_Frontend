@@ -1,38 +1,419 @@
-.App {
+section {
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+.container {
+  padding: 30px;
+  padding-top: 10px; 
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 400px !important;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.login_1 {
+  width: 100%;
+  padding: 40px 0;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+  background-color: black;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative; 
+}
+
+.login_1 p {
+  margin: 0;
+  position: absolute;
+  bottom: 10px; 
+  left: 10px; 
+  cursor: pointer;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.userform {
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.userform h3 {
+  margin-bottom: 10px;
+  margin-top:15px;
+  color: black;
+}
+
+.login_input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+.submit {
+  width: 100%;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 40px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.col label {
+  margin-top: 10px;
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.register_input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+.register_label {
+  color: #615c5c;
+  text-align: left;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
+
+/*--------------------------------------
+
+.card {
+  margin: 2rem;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.p-organizationchart .p-organizationchart-node-content {
+  background-color:black;
+  border: 1px solid #dddddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem;  
+  text-align: center;
+  width: 150px; 
+  height: auto; 
+}
+
+.p-organizationchart .p-organizationchart-node-content .font-bold {
+  color:aliceblue;
+  font-size: 1rem; 
+}
+
+.p-organizationchart .p-organizationchart-node-content span {
+  color:#ffffff;
+  font-size: 0.8rem; 
+}
+
+@media (max-width: 768px) {
+  .card {
+      margin: 1rem;
+      padding: 0.5rem;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+*/
+
+.admin-dashboard ,.user-dashboard{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  position:relative;
+}
+ 
+.admin-header,.user-header{
+  width: 100%;
+  background-color: black; 
+  color: white;
+  padding: 15px;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  position:-webkit-sticky;
+  position:sticky;
+  top:0;
+}
+ 
+.heading{
+  margin-left: 30px ;
+}
+
+.form-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+ 
+.admin-form {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+}
+ 
+.admin-label {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: left;
+}
+ 
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+ 
+.nav-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #f9f9f9;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin-right: 210px;
+}
+
+.nav-button:hover{
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.logout {
+  background-color: #f9f9f9;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 40px;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.modify-button{
+  background-color: #f9f9f9;
+  color: black;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 40px;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  margin-left:20px;
+  margin-bottom: 30px;
+}
+
+.logout:hover,.modify-button:hover{
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/*-----------------*/
+
+.designation-group {
+  margin-bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.employee-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap:wrap;
+  gap: 50px;
+  overflow-x: auto;  
+}
+
+.employee-card {
+  padding: 10px;
+  border: none;
+  border-radius: 15px;
+  width: 150px;
+  text-align: center;
+  background-color: rgb(102, 102, 102);
+  margin-top: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.employee-name {
+  font-weight: bold;
+  color: white;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.employee-designation {
+  display: block;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.emp-desc{
+  font-weight:500;
+}
+/*---------------------------------*/
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background:#ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 30%; 
+  max-height: 100%; 
+  box-shadow: 0 0 10px black;
+  text-align: justify;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+.profile-image{
+  width:30%;
+}
+
+/*-----------------------------------------*/
+
+@media (max-width: 768px) {
+  .employee-row {
+    gap: 20px;
+  }
+  
+  .employee-card {
+    width: 120px;
+    padding: 8px;
+  }
+  
+  .nav-button {
+    margin-right: 20px;
+  }
+
+  .admin-form, .container {
+    max-width: 90%;
+  }
+
+  .modal-content {
+    max-width: 80%;
+  }
+  
+  .login_1, .container {
+    padding: 20px;
+  }
+  
+  .admin-header, .user-header {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .employee-row {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .employee-card {
+    width: 100%;
+  }
+
+  .admin-form, .container {
+    max-width: 100%;
+  }
+  
+  .nav-button {
+    width: 100%;
+    margin-right: 0;
+    text-align: center;
   }
 }
