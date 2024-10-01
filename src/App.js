@@ -2,15 +2,24 @@ import React from 'react';
 import './App.css';
 import Login from './components/login';
 import Register from './components/register';
-import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
+import AddCourse from './components/addCourse';
+import AssignCourse from './components/assignCourse';
+import EmployeeAnalytics from './components/employeeAnalytics';
+import UserDashboard from './components/userDashboard';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login/>}></Route>
-        <Route path='/register' element={<Register/>}></Route>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/userdash" element={<UserDashboard/>}/>
+        {/* <Route path="/admindash" element={<AdminDashboard />} /> */}
+        <Route path="/add-course" element={<AddCourse />} />
+        <Route path="/assign-course" element={<AssignCourse />} />
+        <Route path="/employee-courses" element={<EmployeeAnalytics />} />
       </Routes>
     </Router>
   );

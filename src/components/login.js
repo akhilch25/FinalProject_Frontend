@@ -29,10 +29,10 @@ export default function Login() {
                 localStorage.setItem("empID",empID);
                 alert("Login successful");
                 if(empID==="EMP000"){
-                    navigate('/admindash');
+                    navigate('/employee-courses');
                 }
                 else{
-                    navigate('/userdash1');
+                    navigate('/userdash');
                 }
             } else {
                 setError(data.message || "An error occurred. Please try again.");
