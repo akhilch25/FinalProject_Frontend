@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
-import Login from './components/login';
-import Register from './components/register';
-import AddCourse from './components/addCourse';
-import AssignCourse from './components/assignCourse';
-import EmployeeAnalytics from './components/employeeAnalytics';
-import UserDashboard from './components/userDashboard';
+import Login from './components/auth/login';
+import Register from './components/auth/register';
+import AddCourse from './components/admin/addCourse';
+import AssignCourse from './components/admin/assignCourse';
+import EmployeeAnalytics from './components/admin/employeeAnalytics';
+import UserDashboard from './components/employee/userDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../App.css';
+import { useNavigate } from 'react-router-dom';
+import '../../App.css';
 
 export default function Header() {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ export default function Header() {
   };
 
   return (
-    <header className="admin-header">
-      <h3 className="heading">User Dashboard</h3>
+    <header className="user-header">
+      <h3 className="heading">Employee Dashboard</h3>
       <nav className="admin-nav">
         <ul>
           <li>

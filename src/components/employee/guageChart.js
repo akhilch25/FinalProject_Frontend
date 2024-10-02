@@ -17,15 +17,15 @@ export default function GaugeChart({ performanceRate }) {
             window.google.charts.setOnLoadCallback(() => {
                 const data = window.google.visualization.arrayToDataTable([
                     ['Label', 'Value'],
-                    ['Performance', performanceRate] // Dynamically update performanceRate
+                    ['Perf_Rate', performanceRate] // Dynamically update performanceRate
                 ]);
 
                 const options = {
-                    width: 800, height: 320,
+                    width: 900, height: 420,
                     redFrom: 0, redTo: 30,
                     yellowFrom: 30, yellowTo: 60,
                     greenFrom: 60, greenTo: 100,
-                    minorTicks: 5
+                    minorTicks: 10
                 };
 
                 const chart = new window.google.visualization.Gauge(document.getElementById('gauge_div'));

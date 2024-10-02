@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
-import '../App.css';
-import Header from './adminHeader';
+import '../../App.css';
+import Header from '../headers/adminHeader';
 
 export default function AddCourse(){
     const [courseID, setCourseID] = useState("");

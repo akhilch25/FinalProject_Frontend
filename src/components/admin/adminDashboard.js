@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './header';
-import '../App.css';
+import Header from '../headers/adminHeader';
+import '../../App.css';
 
 export default function AdminDashboard() {
   return (
