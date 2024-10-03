@@ -238,6 +238,18 @@ input, select {
   max-width: 1000px;
 }
 
+.chart{
+  padding: 20px;
+  margin: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+}
+
 .perf{
   padding: 20px;
   margin: 30px;
@@ -284,6 +296,12 @@ th {
   display: flex;
   margin: 60px;
 }
+
+.analytics{
+  display: flex;
+  margin: 40px;
+}
+
 .modal-overlay {
   display: flex;
   justify-content: center;

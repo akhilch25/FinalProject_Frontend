@@ -5,9 +5,9 @@ import { Chart, registerables } from 'chart.js';
 // Register all necessary components from Chart.js
 Chart.register(...registerables);
 
-const TopEmployeesChart = ({ employees }) => {
+export const TopEmployeesChart = ({ employees }) => {
   const data = {
-    labels: employees.sort((a, b) => a.empID.localeCompare(b.empID)).map(employee => employee.name),
+    labels: employees.sort((a, b) => b.performance_rate-a.performance_rate).slice(0,5).map(employee => employee.name),
     datasets: [
       {
         label: 'Performance Rate',
@@ -38,5 +38,43 @@ const TopEmployeesChart = ({ employees }) => {
     </div>
   );
 };
+export const TopCoursesChart = ({courses}) => {
+    const data= {
+        labels: courses.sort((a,b) => b.Course_Count-a.Course_Count).slice(0,5).map(course => course.courseID),
+        datasets: [
+            {
+                label : 'Course Count',
+                data: courses.map(course => course.Course_Count),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }
+        ]
+    }
+      return (
+        <div>
+          <Bar data={data} options={{ responsive: true }} id="myChart" />
+        </div>
+      );
+  }
 
-export default TopEmployeesChart;
+  export const CourseCompletion = ({courses}) => {
+    const data= {
+        labels: courses.sort((a, b) => a.courseID.localeCompare(b.courseID)).map(course => course.courseID),
+        datasets: [
+            {
+                label : 'Completion Rates',
+                data: courses.map(course => course.Avg_Completion),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }
+        ]
+    }
+      return (
+        <div>
+          <Bar data={data} options={{ responsive: true }} id="myChart" />
+        </div>
+      );
+  }
+
