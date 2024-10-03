@@ -17,7 +17,7 @@ export default function GaugeChart({ performanceRate }) {
             window.google.charts.setOnLoadCallback(() => {
                 const data = window.google.visualization.arrayToDataTable([
                     ['Label', 'Value'],
-                    ['Perf_Rate', performanceRate] // Dynamically update performanceRate
+                    ['Score', performanceRate] // Dynamically update performanceRate
                 ]);
 
                 const options = {

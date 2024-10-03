@@ -19,12 +19,14 @@ export default function Header() {
             <Link to="/employee-courses">Home</Link>
           </li>
           <li>
+            <Link to="/analytics">Analytics</Link>
+          </li>
+          <li>
             <Link to="/add-course">Add Course</Link>
           </li>
           <li>
             <Link to="/assign-course">Assign Course</Link>
           </li>
-          
           <li>
             <a className="logout" onClick={handleLogout}>Logout</a>
           </li>

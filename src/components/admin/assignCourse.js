@@ -39,6 +39,8 @@ export default function AssignCourse() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    
     try{
       const response = await fetch('http://localhost:5000/app/employee-course',{
           method: "POST",
@@ -82,7 +84,7 @@ export default function AssignCourse() {
             required
           >
             <option value="">-- Select Employee --</option>
-            {employees.map((employee) => (
+            {employees.sort((a, b) => a.empID.localeCompare(b.empID)).map((employee) => ( // Sort employees by name
               <option key={employee.empID} value={employee.empID}>
                 {employee.empID} - {employee.name} {/* Show employee name */}
               </option>
@@ -100,7 +102,7 @@ export default function AssignCourse() {
             required
           >
             <option value="">-- Select Course --</option>
-            {courses.map((course) => (
+            {courses.sort((a,b) => a.courseID.localeCompare(b.courseID)).map((course) => (
               <option key={course.courseID} value={course.courseID}>
                 {course.courseID} - {course.name} {/* Show course name */}
               </option>

@@ -5,6 +5,7 @@ import '../../App.css';
 
 export default function EmployeeAnalytics() {
   const [employeeCourses, setEmployeeCourses] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchEmployeeCourses = async () => {
@@ -16,6 +17,17 @@ export default function EmployeeAnalytics() {
       }
     };
 
+    const fetchCourses = async () => {
+      try{
+        const res = await axios.get('http://localhost:5000/app/course');
+        setCourses(res.data);
+      }
+      catch(error){
+        console.error('Error fetching course data',error);
+      }
+    };
+
+    fetchCourses();
     fetchEmployeeCourses();
   }, []);
 
@@ -24,7 +36,8 @@ export default function EmployeeAnalytics() {
       <Header />
       <div className='admindash'>
         <div className="emp-table">
-          <h3>Employee Courses</h3>
+          <h3>Employee - Courses assigned</h3>
+          <div className='table-container'>
           <table>
             <thead>
               <tr>
@@ -36,7 +49,7 @@ export default function EmployeeAnalytics() {
               </tr>
             </thead>
             <tbody>
-              {employeeCourses.map((course) => (
+              {employeeCourses.sort((a, b) => a.empID.localeCompare(b.empID)).map((course) => (
                 <tr key={`${course.empID}-${course.courseID}`}>
                   <td>{course.empID}</td>
                   <td>{course.employee.name}</td>
@@ -47,6 +60,32 @@ export default function EmployeeAnalytics() {
               ))}
             </tbody>
           </table>
+          </div>
+        </div>
+        <div className="emp-table">
+          <h3>Courses registered</h3>
+          <div className='table-container'>
+          <table>
+            <thead>
+              <tr>
+                <th>Course ID</th>
+                <th>Course Name</th>
+                <th>Duration</th>
+                <th>Difficulty</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.sort((a,b)=> a.courseID.localeCompare(b.courseID)).map((course) => (
+                <tr key={`${course.courseID}`}>
+                  <td>{course.courseID}</td>
+                  <td>{course.name}</td>
+                  <td>{course.duration}</td>
+                  <td>{course.difficulty_level}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          </div>
         </div>
       </div>
     </div>

@@ -4,7 +4,8 @@ import Login from './components/auth/login';
 import Register from './components/auth/register';
 import AddCourse from './components/admin/addCourse';
 import AssignCourse from './components/admin/assignCourse';
-import EmployeeAnalytics from './components/admin/employeeAnalytics';
+import EmployeeAnalytics from './components/admin/adminHome';
+import Analytics from './components/admin/analytics';
 import UserDashboard from './components/employee/userDashboard';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ function App() {
         {/* <Route path="/admindash" element={<AdminDashboard />} /> */}
         <Route path="/add-course" element={<AddCourse />} />
         <Route path="/assign-course" element={<AssignCourse />} />
+        <Route path="/analytics" element={<Analytics/>}/>
         <Route path="/employee-courses" element={<EmployeeAnalytics />} />
       </Routes>
     </Router>
