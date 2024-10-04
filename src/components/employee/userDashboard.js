@@ -4,6 +4,9 @@ import '../../App.css';
 import GaugeChart from '../charts/guageChart';
 import axios from 'axios';
 import Modal from './editModel';
+import CertificateModal from './certificateModel'; // Import the Certificate modal component
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 export default function UserDashboard() {
   const [performanceRate, setPerformanceRate] = useState(null);
@@ -14,6 +17,7 @@ export default function UserDashboard() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [newCompletionRate, setNewCompletionRate] = useState(''); // State for new completion rate
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false); // State for certificate modal
 
   useEffect(() => {
     const fetchPerformanceRateAndCourses = async () => {
@@ -32,6 +36,7 @@ export default function UserDashboard() {
           // Fetch courses for the employee
           const coursesResponse = await axios.get(`http://localhost:5000/app/employee-course/${empID}`);
           setCourses(coursesResponse.data); // Expecting an array of EmployeeCourse data
+          
         } else {
           console.error('empID not found in localStorage');
         }
@@ -55,24 +60,41 @@ export default function UserDashboard() {
     setSelectedCourse(null);
   };
 
+  const openCertificateModal = (course) => {
+    setSelectedCourse(course);
+    setIsCertificateModalOpen(true);
+  };
+
+  const closeCertificateModal = () => {
+    setIsCertificateModalOpen(false);
+    setSelectedCourse(null);
+  };
+
   // Function to update the completion rate
   const handleCompletionRateUpdate = async () => {
     try {
       if (selectedCourse) {
-        // Update the completion rate in the backend
+        // Send the PUT request to update the completion rate
         await axios.put(`http://localhost:5000/app/employee-course/${selectedCourse.empID}/${selectedCourse.courseID}`, {
           completion_rate: Number(newCompletionRate)
         });
-        window.location.reload();
-        // After successful update, refresh the courses
+  
+        // Fetch the updated list of courses after the update
         const updatedCoursesResponse = await axios.get(`http://localhost:5000/app/employee-course/${employeeID}`);
-        setCourses(updatedCoursesResponse.data); // Update the courses in the frontend
-        closeModal(); // Close the modal after successful update
+        setCourses(updatedCoursesResponse.data); // Update the frontend with new course data
+  
+        // Fetch the updated performance rate
+        const updatedPerformanceResponse = await axios.get(`http://localhost:5000/app/employee/${employeeID}`);
+        setPerformanceRate(updatedPerformanceResponse.data.performance_rate); // Update the performance rate
+  
+        toast.success('Completion rate updated successfully!');
+        closeModal(); // Close the modal after the update
       }
     } catch (error) {
       console.error('Error updating completion rate', error);
+      toast.error('Failed to update completion rate. Please try again.');
     }
-  };
+  };  
 
   if (loading) {
     return (<div>Loading....</div>);
@@ -93,16 +115,26 @@ export default function UserDashboard() {
                 <th>Duration</th>
                 <th>Difficulty</th>
                 <th>Completion Rate</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               {courses.map((course) => (
-                <tr key={course.courseID} onClick={() => handleEmployeeClick(course)}>
-                  <td>{course.courseID}</td>
-                  <td>{course.course.name}</td>
+                <tr key={course.courseID}>
+                  <td onClick={()=>handleEmployeeClick(course)}>{course.courseID}</td>
+                  <td onClick={()=>handleEmployeeClick(course)}>{course.course.name}</td>
                   <td>{course.course.duration}</td>
                   <td>{course.course.difficulty_level}</td>
-                  <td>{course.completion_rate}%</td>
+                  <td onClick={()=>handleEmployeeClick(course)}>{course.completion_rate}%</td>
+                  <td>
+                    {/* View Certificate button */}
+                    <button
+                      onClick={() => openCertificateModal(course)}
+                      disabled={course.completion_rate < 100}
+                    >
+                      View Certificate
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -132,6 +164,16 @@ export default function UserDashboard() {
           </div>
         )}
       </Modal>
+
+      {/* Certificate Modal */}
+      <CertificateModal
+        isOpen={isCertificateModalOpen}
+        onClose={closeCertificateModal}
+        employeeName={employeeName}
+        courseName={selectedCourse?.course.name}
+        courseDuration={selectedCourse?.course.duration}
+        difficultyLevel={selectedCourse?.course.difficulty_level}
+      />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import Analytics from './components/admin/analytics';
 import UserDashboard from './components/employee/userDashboard';
 import PrivateRoute from './components/privateRoute'; // Import the PrivateRoute component
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -19,11 +20,12 @@ function App() {
         
         {/* Protect the user dashboard and admin routes */}
         <Route path="/userdash" element={<PrivateRoute element={<UserDashboard />} />} />
+        <Route path="/employee-courses" element={<PrivateRoute element={<EmployeeAnalytics />} />} />
         <Route path="/add-course" element={<PrivateRoute element={<AddCourse />} />} />
         <Route path="/assign-course" element={<PrivateRoute element={<AssignCourse />} />} />
         <Route path="/analytics" element={<PrivateRoute element={<Analytics />} />} />
-        <Route path="/employee-courses" element={<PrivateRoute element={<EmployeeAnalytics />} />} />
       </Routes>
+      <ToastContainer />
     </Router>
   );
 }

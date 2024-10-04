@@ -70,6 +70,7 @@ export default function EmployeeAnalytics() {
               <tr>
                 <th>Course ID</th>
                 <th>Course Name</th>
+                <th>Learning Path</th>
                 <th>Duration</th>
                 <th>Difficulty</th>
               </tr>
@@ -79,6 +80,7 @@ export default function EmployeeAnalytics() {
                 <tr key={`${course.courseID}`}>
                   <td>{course.courseID}</td>
                   <td>{course.name}</td>
+                  <td>{course.learning_path}</td>
                   <td>{course.duration}</td>
                   <td>{course.difficulty_level}</td>
                 </tr>

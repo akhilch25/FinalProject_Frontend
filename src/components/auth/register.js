@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../../App.css";
 import {  useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
  
 export default function Register() {
     const [empID, setEmpID] = useState("");
@@ -29,7 +31,7 @@ export default function Register() {
             const data = await response.json();
  
             if (response.ok) {
-                alert("Registration successful");
+                toast.success("Registered Successfully");
                 navigate("/");
             } else {
                 setError(data.message);

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../App.css';
 import Header from '../headers/adminHeader';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 export default function AssignCourse() {
   const [empID, setEmpID] = useState('');
@@ -57,7 +59,7 @@ export default function AssignCourse() {
       const newCourse = await response.json();
       setEmpID("");
       setCourseID("");
-      alert("Course assigned");
+      toast.success('Course Assigned Successfully');
   }
   catch (error) {
       setError(`Error assigning course: ${error.message}`);

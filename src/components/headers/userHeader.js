@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../App.css';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 export default function Header() {
   const navigate = useNavigate();
@@ -8,6 +10,7 @@ export default function Header() {
   const handleLogout = () => {
     navigate('/');
     localStorage.clear();
+    toast.success("Logged out Successfully");
   };
 
   return (

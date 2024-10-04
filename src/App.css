@@ -9,6 +9,8 @@ body, html {
   box-sizing: border-box;
 }
 
+/*-------------Login and Register pages-----*/
+
 section {
   width: 100%;
   height: 100vh;
@@ -77,6 +79,8 @@ section {
   background-color: #f9f9f9;
 }
 
+/*------Buttons------------*/
+
 .submit ,.update-button{
   width: 100%;
   background-color: black;
@@ -84,6 +88,32 @@ section {
   border-radius: 5px;
   padding: 10px;
   margin-top: 40px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.download-button{
+  width: 40%;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 40px;
+  margin-right: 30px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.back-button{
+  width: 40%;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 40px;
+  margin-left: 50px;
   cursor: pointer;
   border: none;
   font-weight: bold;
@@ -117,6 +147,8 @@ section {
   margin-bottom: 10px;
 }
  
+/*----------Admin and User dashboards-----------*/
+
 .admin-header, .user-header {
   display: flex;
   justify-content: space-between;
@@ -201,7 +233,6 @@ input, select {
   box-sizing: border-box;
   background-color: #f9f9f9;
 }
-
 
 .logout:hover,.admin-nav ul li a:hover,
 .admin-nav ul li button:hover {
@@ -302,28 +333,30 @@ th {
   margin: 40px;
 }
 
+/*--------Modal Properties-----------*/
+
 .modal-overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  animation: fadeIn 0.3s ease-in-out;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
+  background: linear-gradient(135deg, #ffffff, #f4f4f9);
+  border-radius: 15px;
+  padding: 30px;
+  width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
   position: relative;
-  animation: slideDown 0.3s ease-in-out;
-  box-shadow: 0 0 10px black;
+  text-align: left;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .close-button {
@@ -336,6 +369,102 @@ th {
   cursor: pointer;
 }
 
+/*------Certification-------------------*/
+.cert-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.cert-modal-content {
+  background: linear-gradient(135deg, #ffffff, #f4f4f9);
+  border-radius: 15px;
+  padding: 30px;
+  width: 500px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  position: relative;
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.certificate-heading {
+  font-family: 'Georgia', serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #4a4a4a;
+  margin-bottom: 20px;
+}
+
+.certificate-body {
+  margin-top: 20px;
+  background-color: #fafafa;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+}
+
+.certificate-text {
+  font-family: 'Cursive', sans-serif;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.certificate-info {
+  font-size: 16px;
+  color: #555;
+}
+
+.certificate-date {
+  font-size: 14px;
+  color: #777;
+  margin-top: 15px;
+}
+
+.certificate-actions {
+  margin-top: 30px;
+}
+
+/*------Guage Chart------------*/
+
+.gauge-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.gauge-title {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.gauge-chart {
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/*------Responsiveness------------*/
 @media (max-width: 768px) {
 
   .login_1, .container {

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../../App.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
  
 export default function Login() {
     const [empID, setEmpID] = useState("");
@@ -27,7 +29,7 @@ export default function Login() {
             if (response.ok) {
                 localStorage.setItem("token", data.token);
                 localStorage.setItem("empID",empID);
-                alert("Login successful");
+                toast.success("Logged in Successfully");
                 if(empID==="EMP000"){
                     navigate('/employee-courses');
                 }
@@ -36,6 +38,7 @@ export default function Login() {
                 }
             } else {
                 setError(data.message || "An error occurred. Please try again.");
+                toast.error('Error logging in.');
             }
         } catch (error) {
             setError("Error logging in. Please try again later.");
@@ -55,7 +58,6 @@ export default function Login() {
                 </div>
                 <div className="userform">
                     <h3>User Login</h3>
-                    {error && <p className="error">{error}</p>}
                     <input
                         className="login_input"
                         type="text"
