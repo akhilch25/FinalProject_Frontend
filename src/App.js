@@ -7,6 +7,7 @@ import AssignCourse from './components/admin/assignCourse';
 import EmployeeAnalytics from './components/admin/adminHome';
 import Analytics from './components/admin/analytics';
 import UserDashboard from './components/employee/userDashboard';
+import AddQuiz from './components/admin/addQuiz';
 import PrivateRoute from './components/privateRoute'; // Import the PrivateRoute component
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/add-course" element={<PrivateRoute element={<AddCourse />} />} />
         <Route path="/assign-course" element={<PrivateRoute element={<AssignCourse />} />} />
         <Route path="/analytics" element={<PrivateRoute element={<Analytics />} />} />
+        <Route path="/add-quiz" element={<PrivateRoute element={<AddQuiz/>}/>}/>
       </Routes>
       <ToastContainer />
     </Router>

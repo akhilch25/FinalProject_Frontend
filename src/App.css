@@ -204,6 +204,19 @@ section {
   padding: 20px;
 }
  
+.quiz-form{
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+}
+
 .admin-form {
   padding: 20px;
   margin: 10px;
@@ -488,5 +501,3 @@ th {
     text-align: center;
   }
 }
-
-
