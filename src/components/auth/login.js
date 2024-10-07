@@ -38,10 +38,13 @@ export default function Login() {
                 }
             } else {
                 setError(data.message || "An error occurred. Please try again.");
+                setEmpID("");
+                setPassword("");
                 toast.error('Error logging in.');
             }
         } catch (error) {
             setError("Error logging in. Please try again later.");
+            
         } finally {
             setLoading(false);
         }
