@@ -4,41 +4,38 @@ import '../../App.css';
 import GaugeChart from '../charts/guageChart';
 import axios from 'axios';
 import Modal from './editModel';
-import CertificateModal from './certificateModel'; // Import the Certificate modal component
-import TestModal from './testModal'; // Import the Test modal component
+import CertificateModal from './certificateModel'; 
+import TestModal from './testModal'; 
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+import 'react-toastify/dist/ReactToastify.css'; 
 
 export default function UserDashboard() {
   const [performanceRate, setPerformanceRate] = useState(null);
   const [employeeName, setEmployeeName] = useState("");
   const [employeeID, setEmployeeID] = useState("");
-  const [courses, setCourses] = useState([]); // State for employee courses
+  const [courses, setCourses] = useState([]); 
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false); // State for certificate modal
-  const [isTestModalOpen, setIsTestModalOpen] = useState(false); // State for test modal
+  const [isCertificateModalOpen, setIsCertificateModalOpen] = useState(false);
+  const [isTestModalOpen, setIsTestModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [newCompletionRate, setNewCompletionRate] = useState(''); // State for new completion rate
-  const [testData, setTestData] = useState([]); // State for test questions
-  const [hasPassedTest, setHasPassedTest] = useState(false); // New state for test passing status
+  const [newCompletionRate, setNewCompletionRate] = useState('');
+  const [testData, setTestData] = useState([]);
+  const [hasPassedTest, setHasPassedTest] = useState(false);
 
   useEffect(() => {
     const fetchPerformanceRateAndCourses = async () => {
       try {
         const empID = localStorage.getItem('empID');
-
         if (empID) {
-          // Fetch performance data for the employee
           const performanceResponse = await axios.get(`http://localhost:5000/app/employee/${empID}`);
           const employeeData = performanceResponse.data;
           setPerformanceRate(employeeData.performance_rate);
           setEmployeeName(employeeData.name);
           setEmployeeID(employeeData.empID);
 
-          // Fetch courses for the employee
           const coursesResponse = await axios.get(`http://localhost:5000/app/employee-course/${empID}`);
-          setCourses(coursesResponse.data); // Expecting an array of EmployeeCourse data
+          setCourses(coursesResponse.data); 
         } else {
           console.error('empID not found in localStorage');
         }
@@ -53,7 +50,7 @@ export default function UserDashboard() {
 
   const handleEmployeeClick = (course) => {
     setSelectedCourse(course);
-    setNewCompletionRate(course.completion_rate); // Pre-fill with current completion rate
+    setNewCompletionRate(course.completion_rate); 
     setIsModalOpen(true);
   };
 
@@ -76,17 +73,15 @@ export default function UserDashboard() {
     setSelectedCourse(course);
     try {
       const response = await axios.get(`http://localhost:5000/app/quiz/${course.courseID}`);
-      
-      // Ensure that response.data.testData is in the expected format
       if (response.data && response.data.testData) {
         setTestData(response.data.testData);
       } else {
         console.error('No test data found in response');
-        setTestData({ Questions: {} }); // Set to an empty structure to avoid errors
+        setTestData([]); 
       }
     } catch (error) {
       console.error('Error fetching test data:', error);
-      setTestData({ Questions: {} }); // Set to an empty structure on error
+      setTestData([]); 
     }
     setIsTestModalOpen(true);
   };
@@ -99,18 +94,17 @@ export default function UserDashboard() {
   const handleCompletionRateUpdate = async () => {
     try {
       if (selectedCourse) {
-        await axios.put(`http://localhost:5000/app/employee-course/${selectedCourse.empID}/${selectedCourse.courseID}`, {
+        await axios.put(`http://localhost:5000/app/employee-course/${employeeID}/${selectedCourse.courseID}`, {
           completion_rate: Number(newCompletionRate)
         });
-  
+
         const updatedCoursesResponse = await axios.get(`http://localhost:5000/app/employee-course/${employeeID}`);
         setCourses(updatedCoursesResponse.data);
-  
         const updatedPerformanceResponse = await axios.get(`http://localhost:5000/app/employee/${employeeID}`);
         setPerformanceRate(updatedPerformanceResponse.data.performance_rate);
-  
+
         toast.success('Completion rate updated successfully!');
-        closeModal(); // Close the modal after the update
+        closeModal();
       }
     } catch (error) {
       console.error('Error updating completion rate', error);
@@ -120,35 +114,35 @@ export default function UserDashboard() {
 
   const handleTestSubmit = async (answers) => {
     try {
-      const empID = localStorage.getItem('empID');  // Ensure key is a string 'empID'
-      
-      // Handle the submission of test answers
+      const empID = localStorage.getItem('empID');
       await axios.post(`http://localhost:5000/app/submit-test`, {
-          empID,  // Pass empID along with courseID and answers
-          courseID: selectedCourse.courseID,
-          answers: answers,
+        empID,  
+        courseID: selectedCourse.courseID,
+        answers: answers,
       });
 
-      // Determine the number of correct answers
       const correctAnswers = Object.keys(answers).filter(
-          (key) => answers[key] === testData.Questions[key].Answer
+        (key) => answers[key] === testData.Questions[key].Answer
       ).length;
 
-      const passingScore = 0.8; // 80% passing score
+      const passingScore = 0.8; 
       const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
 
-      // Determine if the employee can view the certificate
       const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
 
       if (canViewCertificate) {
-          setHasPassedTest(true); // Update state to allow viewing the certificate
-          toast.success('Congratulations! You passed the test');
-      } else {
-          setHasPassedTest(false); // Ensure state is updated if not passing
-          toast.warn('You failed! Better luck next time');
+        setHasPassedTest(true); 
+        toast.success('Congratulations! You passed the test');
+      } else if(selectedCourse.completion_rate !=100 && percentageScore >= (passingScore * 100)) {
+        setHasPassedTest(true); 
+        toast.warn('Congratultions! Complete the course to view certificate');
+      }
+      else{
+        setHasPassedTest(false);
+        toast.error('You failed! Better luck next time')
       }
 
-      closeTestModal(); // Close the modal after submission
+      closeTestModal();
     } catch (error) {
       console.error('Error submitting test', error);
       toast.error('Failed to submit test. Please try again.');
@@ -189,7 +183,7 @@ export default function UserDashboard() {
                       <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px',marginRight:'10px'}} onClick={() => openTestModal(course)}>Take Test</button>
                       <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px'}}
                         onClick={() => openCertificateModal(course)}
-                        disabled={course.completion_rate < 100 || !hasPassedTest} // Update this line
+                        disabled={course.completion_rate < 100 || !hasPassedTest} 
                       >
                         View Certificate
                       </button>
@@ -233,15 +227,15 @@ export default function UserDashboard() {
         courseName={selectedCourse?.course.name}
         courseDuration={selectedCourse?.course.duration}
         difficultyLevel={selectedCourse?.course.difficulty_level}
+        hasPassedTest={hasPassedTest}
       />
 
       {/* Modal for taking the test */}
       <TestModal
         isOpen={isTestModalOpen}
         onClose={closeTestModal}
+        testData={testData}
         onSubmit={handleTestSubmit}
-        courseName={selectedCourse?.course.name}
-        testData={testData} // Pass test data to the test modal
       />
     </div>
   );
