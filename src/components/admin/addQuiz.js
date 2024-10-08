@@ -85,7 +85,15 @@ export default function AddQuiz() {
                         cols="120"
                         value={testData}
                         onChange={(e) => setTestData(e.target.value)}
-                        placeholder="Enter the JSON structure for test data"
+                        placeholder='Enter the JSON structure for test data
+                        {
+                            "courseID": "COURSE001",
+                                "Questions": {
+                                    "Q1": {
+                                    "Question": "",
+                                    "Options": [],
+                                    "Answer": ""
+                    }}}'
                         required
                     />
 

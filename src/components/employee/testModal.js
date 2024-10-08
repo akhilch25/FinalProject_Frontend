@@ -13,6 +13,10 @@ const TestModal = ({ isOpen, onClose, testData, courseName, onSubmit }) => {
   
     const handleSubmit = () => {
       onSubmit(answers); // Pass answers to the parent component
+      handleClose(); // Close the modal
+    };
+
+    const handleClose = () => {
       onClose(); // Close the modal
     };
   
@@ -27,17 +31,20 @@ const TestModal = ({ isOpen, onClose, testData, courseName, onSubmit }) => {
     }
   
     return (
-      <div className="modal-overlay-">
-        <div className="modal-content-">
+      <div className="test-modal-overlay">
+        <div className="test-modal-content">
           <h3>Test for {courseName}</h3>
-          {Object.keys(questions).map((key) => {
+          {Object.keys(questions).map((key, index) => {
             const question = questions[key];
             return (
               <div key={key}>
-                <p>{question.Question}</p>
+                {/* Displaying question number */}
+                <p>{index + 1}. {question.Question}</p>
                 {question.Options.map((option) => (
-                  <label key={option}>
+                  <label key={option} style={{ display: 'flex',alignItems:'center' }}>
+                    {/* Radio button before option */}
                     <input
+                      className='radio'
                       type="radio"
                       name={key}
                       value={option}
@@ -49,11 +56,11 @@ const TestModal = ({ isOpen, onClose, testData, courseName, onSubmit }) => {
               </div>
             );
           })}
-          <button onClick={handleSubmit}>Submit</button>
-          <button onClick={onClose}>Close</button>
+          <button className='submit-button' onClick={handleSubmit}>Submit</button>
+          <button className='test-close' onClick={handleClose}>Close</button>
         </div>
       </div>
     );
   };
-  
+
 export default TestModal;

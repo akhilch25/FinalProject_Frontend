@@ -21,6 +21,7 @@ export default function UserDashboard() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [newCompletionRate, setNewCompletionRate] = useState(''); // State for new completion rate
   const [testData, setTestData] = useState([]); // State for test questions
+  const [hasPassedTest, setHasPassedTest] = useState(false); // New state for test passing status
 
   useEffect(() => {
     const fetchPerformanceRateAndCourses = async () => {
@@ -90,7 +91,6 @@ export default function UserDashboard() {
     setIsTestModalOpen(true);
   };
   
-
   const closeTestModal = () => {
     setIsTestModalOpen(false);
     setSelectedCourse(null);
@@ -120,34 +120,40 @@ export default function UserDashboard() {
 
   const handleTestSubmit = async (answers) => {
     try {
-        // Handle the submission of test answers, you can send it to your backend
-        await axios.post(`http://localhost:5000/app/submit-test`, {
-            courseID: selectedCourse.courseID,
-            answers: answers,
-        });
-        
-        // Determine the number of correct answers
-        const correctAnswers = Object.keys(answers).filter(
-            (key) => answers[key] === testData.Questions[key].Answer
-        ).length;
+      const empID = localStorage.getItem('empID');  // Ensure key is a string 'empID'
+      
+      // Handle the submission of test answers
+      await axios.post(`http://localhost:5000/app/submit-test`, {
+          empID,  // Pass empID along with courseID and answers
+          courseID: selectedCourse.courseID,
+          answers: answers,
+      });
 
-        const passingScore = 0.8; // 80%
-        const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
+      // Determine the number of correct answers
+      const correctAnswers = Object.keys(answers).filter(
+          (key) => answers[key] === testData.Questions[key].Answer
+      ).length;
 
-        if (percentageScore >= passingScore * 100) {
-            toast.success('Congratulations! You passed the test.');
-            // Optionally, issue a certificate or update the database here
-        } else {
-            toast.warn('You did not pass the test. Please try again.');
-        }
+      const passingScore = 0.8; // 80% passing score
+      const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
 
-        closeTestModal(); // Close the modal
+      // Determine if the employee can view the certificate
+      const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
+
+      if (canViewCertificate) {
+          setHasPassedTest(true); // Update state to allow viewing the certificate
+          toast.success('Congratulations! You passed the test');
+      } else {
+          setHasPassedTest(false); // Ensure state is updated if not passing
+          toast.warn('You failed! Better luck next time');
+      }
+
+      closeTestModal(); // Close the modal after submission
     } catch (error) {
-        console.error('Error submitting test', error);
-        toast.error('Failed to submit test. Please try again.');
+      console.error('Error submitting test', error);
+      toast.error('Failed to submit test. Please try again.');
     }
-};
-
+  };
 
   if (loading) {
     return (<div>Loading....</div>);
@@ -180,10 +186,10 @@ export default function UserDashboard() {
                     <td>{course.course.difficulty_level}</td>
                     <td onClick={() => handleEmployeeClick(course)}>{course.completion_rate}%</td>
                     <td>
-                      <button onClick={() => openTestModal(course)}>Take Test</button>
-                      <button
+                      <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px',marginRight:'10px'}} onClick={() => openTestModal(course)}>Take Test</button>
+                      <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px'}}
                         onClick={() => openCertificateModal(course)}
-                        disabled={course.completion_rate < 100}
+                        disabled={course.completion_rate < 100 || !hasPassedTest} // Update this line
                       >
                         View Certificate
                       </button>
@@ -195,7 +201,7 @@ export default function UserDashboard() {
           </div>
         </div>
         <div className='perf'>
-          {/* <GaugeChart performanceRate={performanceRate} /> */}
+          <GaugeChart performanceRate={performanceRate} />
         </div>
       </div>
 
@@ -214,11 +220,12 @@ export default function UserDashboard() {
               onChange={(e) => setNewCompletionRate(e.target.value)}
             />
             <button className='update-button' onClick={handleCompletionRateUpdate}>Update</button>
+            <button className='close-button' onClick={closeModal}>Close</button>
           </div>
         )}
       </Modal>
 
-      {/* Certificate Modal */}
+      {/* Modal for certificate viewing */}
       <CertificateModal
         isOpen={isCertificateModalOpen}
         onClose={closeCertificateModal}
@@ -228,13 +235,13 @@ export default function UserDashboard() {
         difficultyLevel={selectedCourse?.course.difficulty_level}
       />
 
-      {/* Test Modal */}
+      {/* Modal for taking the test */}
       <TestModal
         isOpen={isTestModalOpen}
         onClose={closeTestModal}
-        testData={testData}
-        courseName={selectedCourse?.course.name}
         onSubmit={handleTestSubmit}
+        courseName={selectedCourse?.course.name}
+        testData={testData} // Pass test data to the test modal
       />
     </div>
   );
