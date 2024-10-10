@@ -115,6 +115,7 @@ export default function AssignCourse() {
             Assign
           </button>
         </form>
+        <img className='assign-img' src="/assign.jpg" alt="Add Quiz" style={{ width: '100%', maxWidth: '1100px', height: '100%' }}/>
       </div>
     </div>
   );

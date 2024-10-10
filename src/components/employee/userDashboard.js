@@ -94,7 +94,7 @@ export default function UserDashboard() {
   const handleCompletionRateUpdate = async () => {
     try {
       if (selectedCourse) {
-        await axios.put(`http://localhost:5000/app/employee-course/${employeeID}/${selectedCourse.courseID}`, {
+        await axios.put(`http://localhost:5000/app/employee-course/${selectedCourse.empID}/${selectedCourse.courseID}`, {
           completion_rate: Number(newCompletionRate)
         });
 
@@ -114,40 +114,39 @@ export default function UserDashboard() {
 
   const handleTestSubmit = async (answers) => {
     try {
-      const empID = localStorage.getItem('empID');
-      await axios.post(`http://localhost:5000/app/submit-test`, {
-        empID,  
-        courseID: selectedCourse.courseID,
-        answers: answers,
-      });
+        const empID = localStorage.getItem('empID');
+        await axios.post(`http://localhost:5000/app/submit-test`, {
+            empID,  
+            courseID: selectedCourse.courseID,
+            answers: answers,
+        });
 
-      const correctAnswers = Object.keys(answers).filter(
-        (key) => answers[key] === testData.Questions[key].Answer
-      ).length;
+        const correctAnswers = Object.keys(answers).filter(
+            (key) => answers[key] === testData.Questions[key].Answer
+        ).length;
 
-      const passingScore = 0.8; 
-      const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
+        const passingScore = 0.8; 
+        const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
 
-      const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
+        const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
 
-      if (canViewCertificate) {
-        setHasPassedTest(true); 
-        toast.success('Congratulations! You passed the test');
-      } else if(selectedCourse.completion_rate !=100 && percentageScore >= (passingScore * 100)) {
-        setHasPassedTest(true); 
-        toast.warn('Congratultions! Complete the course to view certificate');
-      }
-      else{
-        setHasPassedTest(false);
-        toast.error('You failed! Better luck next time')
-      }
+        if (canViewCertificate) {
+            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: true })); 
+            toast.success('Congratulations! You passed the test');
+        } else if(selectedCourse.completion_rate !== 100 && percentageScore >= (passingScore * 100)) {
+            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: true })); 
+            toast.warn('Congratulations! Complete the course to view the certificate');
+        } else {
+            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: false }));
+            toast.error('You failed! Better luck next time');
+        }
 
-      closeTestModal();
+        closeTestModal();
     } catch (error) {
-      console.error('Error submitting test', error);
-      toast.error('Failed to submit test. Please try again.');
+        console.error('Error submitting test', error);
+        toast.error('Failed to submit test. Please try again.');
     }
-  };
+};
 
   if (loading) {
     return (<div>Loading....</div>);
@@ -183,7 +182,7 @@ export default function UserDashboard() {
                       <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px',marginRight:'10px'}} onClick={() => openTestModal(course)}>Take Test</button>
                       <button style={{padding: '5px',border:'none',borderRadius: '5px',cursor: 'pointer',marginLeft:'10px'}}
                         onClick={() => openCertificateModal(course)}
-                        disabled={course.completion_rate < 100 || !hasPassedTest} 
+                        disabled={course.completion_rate < 100 || !hasPassedTest[course.courseID]} 
                       >
                         View Certificate
                       </button>
@@ -214,7 +213,6 @@ export default function UserDashboard() {
               onChange={(e) => setNewCompletionRate(e.target.value)}
             />
             <button className='update-button' onClick={handleCompletionRateUpdate}>Update</button>
-            <button className='close-button' onClick={closeModal}>Close</button>
           </div>
         )}
       </Modal>
@@ -235,6 +233,7 @@ export default function UserDashboard() {
         isOpen={isTestModalOpen}
         onClose={closeTestModal}
         testData={testData}
+        courseName={selectedCourse?.course.name}
         onSubmit={handleTestSubmit}
       />
     </div>

@@ -225,7 +225,7 @@ section {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: top;
+  align-items: center;
   width: 100%;
   padding: 20px;
 }
@@ -241,6 +241,14 @@ section {
   align-items: center;
   width: 100%;
   max-width: 1000px;
+}
+
+.assign-img{
+  max-width: 100%; /* Responsive image */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 10px; /* Rounded corners for the image */
+  margin-top: 20px;
+  margin-left: 80px; /* Space above the image */
 }
 
 .admin-form {

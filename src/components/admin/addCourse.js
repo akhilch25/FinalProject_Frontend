@@ -94,6 +94,7 @@ export default function AddCourse() {
 
                     <button className="submit" type="submit">Add Course</button>
                 </form>
+                <img className='assign-img' src="/course_add.jpg" alt="Add Quiz" style={{ width: '100%', maxWidth: '1150px', height: '100%' }}/>
             </div>
         </div>
     );
