@@ -21,7 +21,7 @@ export default function UserDashboard() {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [newCompletionRate, setNewCompletionRate] = useState('');
   const [testData, setTestData] = useState([]);
-  const [hasPassedTest, setHasPassedTest] = useState(false);
+  const [hasPassedTest, setHasPassedTest] = useState({}); // Store test pass state for each course
 
   useEffect(() => {
     const fetchPerformanceRateAndCourses = async () => {
@@ -36,6 +36,12 @@ export default function UserDashboard() {
 
           const coursesResponse = await axios.get(`http://localhost:5000/app/employee-course/${empID}`);
           setCourses(coursesResponse.data); 
+
+          // Retrieve the hasPassedTest data from localStorage
+          const storedTestStatus = localStorage.getItem('hasPassedTest');
+          if (storedTestStatus) {
+            setHasPassedTest(JSON.parse(storedTestStatus)); // Load test completion state from localStorage
+          }
         } else {
           console.error('empID not found in localStorage');
         }
@@ -85,7 +91,7 @@ export default function UserDashboard() {
     }
     setIsTestModalOpen(true);
   };
-  
+
   const closeTestModal = () => {
     setIsTestModalOpen(false);
     setSelectedCourse(null);
@@ -114,39 +120,45 @@ export default function UserDashboard() {
 
   const handleTestSubmit = async (answers) => {
     try {
-        const empID = localStorage.getItem('empID');
-        await axios.post(`http://localhost:5000/app/submit-test`, {
-            empID,  
-            courseID: selectedCourse.courseID,
-            answers: answers,
-        });
+      const empID = localStorage.getItem('empID');
+      await axios.post(`http://localhost:5000/app/submit-test`, {
+        empID,
+        courseID: selectedCourse.courseID,
+        answers: answers,
+      });
 
-        const correctAnswers = Object.keys(answers).filter(
-            (key) => answers[key] === testData.Questions[key].Answer
-        ).length;
+      const correctAnswers = Object.keys(answers).filter(
+        (key) => answers[key] === testData.Questions[key].Answer
+      ).length;
 
-        const passingScore = 0.8; 
-        const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
+      const passingScore = 0.8; 
+      const percentageScore = (correctAnswers / Object.keys(testData.Questions).length) * 100;
 
-        const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
+      const canViewCertificate = percentageScore >= (passingScore * 100) && selectedCourse.completion_rate === 100;
 
-        if (canViewCertificate) {
-            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: true })); 
-            toast.success('Congratulations! You passed the test');
-        } else if(selectedCourse.completion_rate !== 100 && percentageScore >= (passingScore * 100)) {
-            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: true })); 
-            toast.warn('Congratulations! Complete the course to view the certificate');
-        } else {
-            setHasPassedTest(prevState => ({ ...prevState, [selectedCourse.courseID]: false }));
-            toast.error('You failed! Better luck next time');
-        }
+      if (canViewCertificate) {
+        const updatedHasPassedTest = { ...hasPassedTest, [selectedCourse.courseID]: true };
+        setHasPassedTest(updatedHasPassedTest);
+        localStorage.setItem('hasPassedTest', JSON.stringify(updatedHasPassedTest)); // Save test state in localStorage
+        toast.success('Congratulations! You passed the test');
+      } else if (selectedCourse.completion_rate !== 100 && percentageScore >= (passingScore * 100)) {
+        const updatedHasPassedTest = { ...hasPassedTest, [selectedCourse.courseID]: true };
+        setHasPassedTest(updatedHasPassedTest);
+        localStorage.setItem('hasPassedTest', JSON.stringify(updatedHasPassedTest));
+        toast.warn('Congratulations! Complete the course to view the certificate');
+      } else {
+        const updatedHasPassedTest = { ...hasPassedTest, [selectedCourse.courseID]: false };
+        setHasPassedTest(updatedHasPassedTest);
+        localStorage.setItem('hasPassedTest', JSON.stringify(updatedHasPassedTest));
+        toast.error('You failed! Better luck next time');
+      }
 
-        closeTestModal();
+      closeTestModal();
     } catch (error) {
-        console.error('Error submitting test', error);
-        toast.error('Failed to submit test. Please try again.');
+      console.error('Error submitting test', error);
+      toast.error('Failed to submit test. Please try again.');
     }
-};
+  };
 
   if (loading) {
     return (<div>Loading....</div>);
